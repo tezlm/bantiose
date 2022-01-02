@@ -1,0 +1,21 @@
+{
+	"name": "imgboard",
+	"version": "0.1.0",
+	"description": "an image board",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "tezlm",
+	"type": "module",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.17.2",
+		"knex": "^0.95.15",
+		"sharp": "^0.29.3",
+		"sqlite3": "^5.0.2"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.13"
+	}
+}
