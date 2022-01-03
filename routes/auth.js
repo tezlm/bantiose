@@ -11,7 +11,7 @@ function genHash(input) {
 }
 
 export default (app, { log, db, sessions }) => {
-	// app.post("/login", login);
+	app.post("/login", login, (_, res) => res.writeHead(400).end("bad username or password"));
 	app.post("/signup", signup);
 
 	async function signup(req, res) {
@@ -32,9 +32,21 @@ export default (app, { log, db, sessions }) => {
 			salt: salt,
 		});
 
-		sessions.add(username);
 		log.info(`new user! welcome, ${username}!`);
-		res.send("too hundrad okey");
+		res.cookie("session", sessions.add(username)).send("too hundrad okey");
+	}
+
+	async function login(req, res, next) {
+		const { username, password } = req.body;
+		const [user] = await db("users").select("userId").where("username", username);
+		if(!user) return next();
+
+		const [{ salt, password: hash }] = await db("passwords").select().where("userId", user.userId);
+		if(!genHash(password + salt).equals(hash)) return next();
+
+		sessions.add(username);
+		log.debug(`logged in ${username}`);
+		res.cookie("session", sessions.add(username)).send("too hundrad okey");
 	}
 };
 
