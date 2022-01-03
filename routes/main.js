@@ -7,5 +7,6 @@ export default (app) => {
 	app.get("/", serve("views/index.html"));
 	app.get("/login", serve("views/login.html"));
 	app.get("/signup", serve("views/signup.html"));
+	app.get("/about", serve("views/about.html"));
 };
 

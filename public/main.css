@@ -1,0 +1,26 @@
+:root {
+	--background:  #111111;
+	--color:       #eeeeee;
+	--accent1:     #41ead4;
+	--accent2:     #8963ba;
+	--accent3:     #f06449;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	margin: 2em auto;
+	font: 16px/1.4 sysem-ui;
+	background: var(--background);
+	color: var(--color);
+	max-width: 750px;
+}
+
+a {
+	color: var(--accent1);
+}
+

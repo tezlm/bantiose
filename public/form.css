@@ -1,0 +1,24 @@
+input {
+	background: var(--background);
+	color: var(--color);
+	outline: none !important;
+	padding: 0.5em;
+	margin: 3px 0;
+}
+
+input[type=text], input[type=password] {
+	background: var(--background);
+	border: solid var(--accent1) 2px;
+	margin-bottom: 1em;
+}
+
+input[type=submit] {
+	border: solid var(--accent2) 2px;
+	margin-top: 1em;
+	transition: all 0.2s;
+}
+
+input[type=submit]:hover {
+	background: var(--accent2);
+}
+
