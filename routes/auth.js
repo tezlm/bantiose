@@ -16,35 +16,43 @@ export default (app, { log, db, sessions }) => {
 
 	async function signup(req, res) {
 		const { username, password } = req.body;
+
+		// make sure the passwords match!
 		if(password !== req.body.firmpass) {
 			res.writeHead(400).end("username and password dont match");
 			return;
 		}
+
+		// check if the username is taken
+		const [user] = await db("users").select().where("username", username);
+		if(user) {
+			res.writeHead(400).end("username already taken");
+			return;
+		}
+
+		// create user
 		const salt = genSalt();
 		const hash = genHash(password + salt);
-		const id = await db("users").insert({
-			createdAt: new Date(),
-			username,
-		});
-		await db("passwords").insert({
-			userId: id,
-			password: hash,
-			salt: salt,
-		});
+		const userId = await db("users").insert({ username, createdAt: new Date() });
+		await db("passwords").insert({ userId, password: hash, salt });
 
+		// celebrate with cookies!
 		log.info(`new user! welcome, ${username}!`);
 		res.cookie("session", sessions.add(username)).send("too hundrad okey");
 	}
 
 	async function login(req, res, next) {
 		const { username, password } = req.body;
+
+		// check if the user exists
 		const [user] = await db("users").select("userId").where("username", username);
 		if(!user) return next();
 
+		// validate the password
 		const [{ salt, password: hash }] = await db("passwords").select().where("userId", user.userId);
 		if(!genHash(password + salt).equals(hash)) return next();
 
-		sessions.add(username);
+		// celebrate with cookies!
 		log.debug(`logged in ${username}`);
 		res.cookie("session", sessions.add(username)).send("too hundrad okey");
 	}

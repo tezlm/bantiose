@@ -1,3 +1,4 @@
+// a simple logger
 const color = (text, color) => `\x1b[${color}m\x1b[1m${text}\x1b[0m`;
 const tag = (name, c) => `[${color(name, c)}]`;
 const c = console;

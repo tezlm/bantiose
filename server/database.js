@@ -1,6 +1,7 @@
 import knex from "knex";
 import fs from "fs";
 
+// create the default tables
 async function init(schema, log) {
 	if(await schema.hasTable("users")) return;
 	log.info("creating new database");
