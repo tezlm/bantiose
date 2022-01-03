@@ -10,12 +10,8 @@ export class Sessions extends Map {
 	add(name) {
 		const uuid = crypto.randomUUID();
 		this.set(uuid, name);
-		setTimeout(() => this.delete(uuid));
+		setTimeout(() => this.delete(uuid), this.timeout);
 		return uuid;
-	}
-
-	valid(name, uuid) {
-		return this.has(uuid) && this.get(uuid) === name;
 	}
 
 	reset(name) {

@@ -10,7 +10,9 @@
 	"type": "module",
 	"license": "ISC",
 	"dependencies": {
+		"cookie-parser": "^1.4.6",
 		"express": "^4.17.2",
+		"express-handlebars": "^6.0.2",
 		"knex": "^0.95.15",
 		"sharp": "^0.29.3",
 		"sqlite3": "^5.0.2"

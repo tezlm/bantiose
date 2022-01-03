@@ -1,12 +1,12 @@
-import { join } from "path";
-const cwd = process.cwd();
-const file = name => join(cwd, name);
-const serve = name => (_, res) => res.sendFile(file(name));
+import express from "express";
+const serve = name => (_, res) => res.render(name);
 
 export default (app) => {
-	app.get("/", serve("views/index.html"));
-	app.get("/login", serve("views/login.html"));
-	app.get("/signup", serve("views/signup.html"));
-	app.get("/about", serve("views/about.html"));
+	app.get("/", serve("index.html"));
+	for(let route of ["login", "signup", "about", "create"]) {
+		app.get(`/${route}`, serve(`${route}.html`));
+	}
+
+	app.use("/static", express.static("public"));
 };
 

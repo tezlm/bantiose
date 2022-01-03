@@ -6,6 +6,7 @@ they find throughout the day.
 ## roadmap
 
 - [x] authentication 
+- [ ] user options
 - [ ] posting
 - [ ] tagging system
 - [ ] media posts

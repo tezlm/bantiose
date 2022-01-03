@@ -19,13 +19,15 @@ export default (app, { log, db, sessions }) => {
 
 		// make sure the passwords match!
 		if(password !== req.body.firmpass) {
-			res.writeHead(400).end("username and password dont match");
+			log.debug(`...but passwords didnt match`);
+			res.writeHead(400).end("passwords dont match");
 			return;
 		}
 
 		// check if the username is taken
 		const [user] = await db("users").select().where("username", username);
 		if(user) {
+			log.debug(`...but username was already taken`);
 			res.writeHead(400).end("username already taken");
 			return;
 		}
@@ -38,7 +40,10 @@ export default (app, { log, db, sessions }) => {
 
 		// celebrate with cookies!
 		log.info(`new user! welcome, ${username}!`);
-		res.cookie("session", sessions.add(username)).send("too hundrad okey");
+		res
+			.cookie("session", sessions.add(userId))
+			.cookie("username", username)
+			.redirect("/");
 	}
 
 	async function login(req, res, next) {
@@ -46,15 +51,24 @@ export default (app, { log, db, sessions }) => {
 
 		// check if the user exists
 		const [user] = await db("users").select("userId").where("username", username);
-		if(!user) return next();
+		if(!user) {
+			log.debug(`...but username/password didn't exist`);
+			return next();
+		}
 
 		// validate the password
 		const [{ salt, password: hash }] = await db("passwords").select().where("userId", user.userId);
-		if(!genHash(password + salt).equals(hash)) return next();
+		if(!genHash(password + salt).equals(hash)) {
+			log.debug(`...but username/password didn't exist`);
+			return next();
+		}
 
 		// celebrate with cookies!
 		log.debug(`logged in ${username}`);
-		res.cookie("session", sessions.add(username)).send("too hundrad okey");
+		res
+			.cookie("session", sessions.add(user.userId))
+			.cookie("username", username)
+			.redirect("/");
 	}
 };
 

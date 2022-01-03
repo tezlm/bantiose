@@ -1,3 +1,6 @@
+/* the main css stylesheet for everything */
+@import "/static/form.css";
+
 :root {
 	--background:  #111111;
 	--color:       #eeeeee;

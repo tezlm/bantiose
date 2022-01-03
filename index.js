@@ -1,6 +1,8 @@
-// the core of imgboard
+// the core of bantiose
 import express from "express";
 import fs from "fs/promises";
+import { engine } from 'express-handlebars';
+import cookieParser from "cookie-parser";
 import Log from "./server/log.js";
 
 // setup stuff
@@ -9,8 +11,11 @@ const app = express();
 const log = new Log(4);
 
 // middleware
+app.engine("html", engine({ extname: ".html" }));
+app.set("views", "views");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // api
+app.use(cookieParser()); 
 app.use((req, _, next) => {
 	log.debug(`got a ${req.method} on ${req.url}`);
 	next();

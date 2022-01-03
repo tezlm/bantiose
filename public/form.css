@@ -1,15 +1,12 @@
-input {
+/* for forms and input */
+
+input, textarea {
 	background: var(--background);
 	color: var(--color);
 	outline: none !important;
 	padding: 0.5em;
-	margin: 3px 0;
-}
-
-input[type=text], input[type=password] {
-	background: var(--background);
+	margin: 3px 0 1em 0;
 	border: solid var(--accent1) 2px;
-	margin-bottom: 1em;
 }
 
 input[type=submit] {
@@ -18,7 +15,12 @@ input[type=submit] {
 	transition: all 0.2s;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, input[type=submit]:focus {
 	background: var(--accent2);
+}
+
+textarea {
+	min-height: 20em;
+	min-width: 30em;
 }
 
