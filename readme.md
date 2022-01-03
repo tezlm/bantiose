@@ -1,15 +1,17 @@
 # bantiose
 
 A general purpose content hole, where people can dump interesting bits
-they find throughout the day.
+they find throughout the day. Name comes from banal and otiose.
 
 ## roadmap
 
 - [x] authentication 
-- [ ] user options
-- [ ] posting
-- [ ] tagging system
+- [x] user config
+- [x] basic posting
 - [ ] media posts
-- [ ] voting system
-- [ ] searching system
+- [ ] post config
+- [ ] user profiles
+- [ ] tagging
+- [ ] voting
+- [ ] searching
 

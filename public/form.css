@@ -5,7 +5,7 @@ input, textarea {
 	color: var(--color);
 	outline: none !important;
 	padding: 0.5em;
-	margin: 3px 0 1em 0;
+	margin: 3px 0 10px 0;
 	border: solid var(--accent1) 2px;
 }
 
@@ -17,6 +17,14 @@ input[type=submit] {
 
 input[type=submit]:hover, input[type=submit]:focus {
 	background: var(--accent2);
+}
+
+input[type=submit].danger {
+	border: solid var(--accent3) 2px;
+}
+
+input[type=submit].danger:hover, input[type=submit].danger:focus {
+	background: var(--accent3);
 }
 
 textarea {

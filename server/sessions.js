@@ -14,6 +14,10 @@ export class Sessions extends Map {
 		return uuid;
 	}
 
+	from(req) {
+		return this.get(req.cookies.session);
+	}
+
 	reset(name) {
 		for(let [key, value] of this) {
 			if(name === value) this.delete(key);

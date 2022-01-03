@@ -1,0 +1,25 @@
+<h1>settings</h1><br>
+<h2>about you</h2>
+<form method="POST" action="/config/about">
+	<textarea name="about" placeholder="...a-about mwe?~">{{about}}</textarea><br />
+	<input type="submit" value="update" />
+</form>
+<br>
+<h2>change password</h2>
+<form method="POST" action="/config/password">
+	<label for="password">current password</label><br />
+	<input required name="password" type="password" /><br />
+	<label for="newpass">new password</label><br />
+	<input required name="newpass" type="password" /><br />
+	<label for="firmpass">confirm password</label><br />
+	<input required name="firmpass" type="password" /><br />
+	<input type="submit" value="update" />
+</form>
+<br>
+<h2>delete account</h2>
+<form method="POST" action="/config/delete">
+	<label for="password">password</label><br />
+	<input required name="password" type="password" /><br />
+	<input type="submit" value="delete" class="danger" />
+</form>
+

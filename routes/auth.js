@@ -18,19 +18,11 @@ export default (app, { log, db, sessions }) => {
 		const { username, password } = req.body;
 
 		// make sure the passwords match!
-		if(password !== req.body.firmpass) {
-			log.debug(`...but passwords didnt match`);
-			res.writeHead(400).end("passwords dont match");
-			return;
-		}
+		if(password !== req.body.firmpass) return res.writeHead(400).end("passwords dont match");
 
 		// check if the username is taken
 		const [user] = await db("users").select().where("username", username);
-		if(user) {
-			log.debug(`...but username was already taken`);
-			res.writeHead(400).end("username already taken");
-			return;
-		}
+		if(user) return res.writeHead(400).end("username already taken");
 
 		// create user
 		const salt = genSalt();
@@ -51,17 +43,11 @@ export default (app, { log, db, sessions }) => {
 
 		// check if the user exists
 		const [user] = await db("users").select("userId").where("username", username);
-		if(!user) {
-			log.debug(`...but username/password didn't exist`);
-			return next();
-		}
+		if(!user) return next();
 
 		// validate the password
 		const [{ salt, password: hash }] = await db("passwords").select().where("userId", user.userId);
-		if(!genHash(password + salt).equals(hash)) {
-			log.debug(`...but username/password didn't exist`);
-			return next();
-		}
+		if(!genHash(password + salt).equals(hash)) return next();
 
 		// celebrate with cookies!
 		log.debug(`logged in ${username}`);

@@ -16,11 +16,12 @@
 }
 
 body {
-	margin: 2em auto;
-	font: 16px/1.4 sysem-ui;
 	background: var(--background);
 	color: var(--color);
+	font: 16px/1.4 sysem-ui;
+	margin: 2em auto;
 	max-width: 750px;
+	overflow-y: overlay;
 }
 
 a {
