@@ -12,7 +12,7 @@ input, textarea {
 input[type=submit] {
 	border: solid var(--accent2) 2px;
 	margin-top: 1em;
-	transition: all 0.2s;
+	transition: all 0.1s;
 }
 
 input[type=submit]:hover, input[type=submit]:focus {
