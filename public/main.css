@@ -28,3 +28,7 @@ a {
 	color: var(--accent1);
 }
 
+.error {
+	color: var(--accent3);
+}
+

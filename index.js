@@ -26,6 +26,7 @@ const ctx = {};
 ctx.db = await load("./server/database.js", log);
 ctx.sessions = await load("./server/sessions.js", log);
 ctx.log = log;
+ctx.bundles = await load("./server/bundles.js", log);
 
 // load routes
 for(let i of await fs.readdir("routes")) {

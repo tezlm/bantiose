@@ -4,11 +4,7 @@ export default (app, { log, db, sessions }) => {
 
 	async function create(req, res) {
 		const userId = sessions.get(req.cookies.session);
-		if(!userId) {
-			log.debug(`...but was not logged in`);
-			res.writeHead(400).end("not logged in");
-			return;
-		}
+		if(!userId) return res.redirect("/login");
 
 		const [id] = await db("posts").insert({
 			createdAt: new Date(),
@@ -32,6 +28,10 @@ export default (app, { log, db, sessions }) => {
 			author: username,
 			body: post.description,
 		});
+	}
+
+	async function cantFind(req, res) {
+		res.render("404.html", { title: "" });
 	}
 };
 

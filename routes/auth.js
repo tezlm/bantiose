@@ -11,18 +11,18 @@ function genHash(input) {
 }
 
 export default (app, { log, db, sessions }) => {
-	app.post("/login", login, (_, res) => res.writeHead(400).end("bad username or password"));
+	app.post("/login", login);
 	app.post("/signup", signup);
 
 	async function signup(req, res) {
 		const { username, password } = req.body;
 
 		// make sure the passwords match!
-		if(password !== req.body.firmpass) return res.writeHead(400).end("passwords dont match");
+		if(password !== req.body.firmpass) return render(res, "signup", "passwords dont match");
 
 		// check if the username is taken
 		const [user] = await db("users").select().where("username", username);
-		if(user) return res.writeHead(400).end("username already taken");
+		if(user) return render(res, "signup", "username already taken");
 
 		// create user
 		const salt = genSalt();
@@ -38,16 +38,16 @@ export default (app, { log, db, sessions }) => {
 			.redirect("/");
 	}
 
-	async function login(req, res, next) {
+	async function login(req, res) {
 		const { username, password } = req.body;
 
 		// check if the user exists
 		const [user] = await db("users").select("userId").where("username", username);
-		if(!user) return next();
+		if(!user) return render(res, "login", "username or password incorrect");
 
 		// validate the password
 		const [{ salt, password: hash }] = await db("passwords").select().where("userId", user.userId);
-		if(!genHash(password + salt).equals(hash)) return next();
+		if(!genHash(password + salt).equals(hash)) return render(res, "login", "username or password incorrect");
 
 		// celebrate with cookies!
 		log.debug(`logged in ${username}`);
@@ -55,6 +55,10 @@ export default (app, { log, db, sessions }) => {
 			.cookie("session", sessions.add(user.userId))
 			.cookie("username", username)
 			.redirect("/");
+	}
+
+	function render(res, name, error) {
+		res.render(`${name}.html`, { title: `bantiose::${name}`, error });
 	}
 };
 

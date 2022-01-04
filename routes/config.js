@@ -20,7 +20,7 @@ export default (app, { log, db, sessions }) => {
 		const sess = sessions.from(req);
 		if(!sess) return res.redirect("/login");
 		const sel = await db("users").select("about").where("userId", sess);
-		res.render("config.html", sel[0]);
+		res.render("config.html", { ...sel[0], title: "bantiose::config" });
 	}
 
 	async function about(req, res) {
