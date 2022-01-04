@@ -4,7 +4,7 @@ const serve = name => (_, res) => res.render(name, { title: fmt(name) });
 const redir = path => (_, res) => res.redirect(path);
 
 export default (app, { sessions: sess }) => {
-	app.get("/", (_, res) => res.render("index.html", { title: "bantiose" }));
+	app.get("/", (req, res) => res.render("index.html", { title: "bantiose", loggedIn: sess.from(req) }));
 	app.get("/about", serve("about.html"));
 	app.get("/login", match(redir("/"), serve("login.html")));
 	app.get("/signup", match(redir("/"), serve("signup.html")));

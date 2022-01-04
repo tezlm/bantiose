@@ -1,4 +1,11 @@
 <h1>welcome to bantiose</h1>
+{{#loggedIn}}
+<a href="/config">config</a><br />
+<a href="/create">new post</a><br />
+{{/loggedIn}}
+{{^loggedIn}}
 <a href="/login">login</a><br />
 <a href="/signup">signup</a><br />
+{{/loggedIn}}
 <a href="/about">about</a><br />
+
