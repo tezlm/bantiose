@@ -32,6 +32,9 @@ for(let i of await fs.readdir("routes")) {
 	await load(`./routes/${i}`, app, ctx);
 }
 
+// 404
+app.get("*", (_, res) => res.render("404.html", { title: "bantiose::404" }));
+
 // ready!
 app.listen(port, () => log.info(`listening on :${port}`));
 

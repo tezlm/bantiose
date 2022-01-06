@@ -1,15 +1,19 @@
+import { render, getUser, getPost } from "../server/posts.js";
+
 export default (app, { log, db, sessions }) => {
 	app.post("/create", create);
-	app.get("/post/:id", getPost);
+	app.get("/post/:id", routePost, cantFind);
+	app.get("/raw/:id", routePostRaw, cantFind);
 
 	async function create(req, res) {
 		const userId = sessions.get(req.cookies.session);
 		if(!userId) return res.redirect("/login");
+		const post = req.body;
 
 		const [id] = await db("posts").insert({
 			createdAt: new Date(),
-			title: req.body.title || "unnamed",
-			description: req.body.body || "",
+			title: post.title || "unnamed",
+			body: post.body || "",
 			author: userId,
 		});
 
@@ -18,20 +22,20 @@ export default (app, { log, db, sessions }) => {
 		res.redirect(`/post/${id}`);
 	}
 
-	async function getPost(req, res, next) {
-		const [post] = await db("posts").select().where("postId", req.params.id);
+	async function routePost(req, res, next) {
+		const post = await getPost(db, req.params.id);
 		if(!post) return next();
-		const [{ username }] = await db("users").select().where("userId", post.author);
-		res.render("post.html", {
-			title: post.title,
-			time: new Date(post.createdAt).toLocaleString(),
-			author: username,
-			body: post.description,
-		});
+		res.render("post.html", render(post, await getUser(db, post.author)));
 	}
 
-	async function cantFind(req, res) {
-		res.render("404.html", { title: "" });
+	async function routePostRaw(req, res, next) {
+		const post = await getPost(db, req.params.id);
+		if(!post) return next();
+		res.contentType("text/markdown").send(post.body);
+	}
+
+	async function cantFind(_, res) {
+		res.render("404.html", { title: "bantiose::404" });
 	}
 };
 

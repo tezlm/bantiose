@@ -1,9 +1,13 @@
 /* the main css stylesheet for everything */
 @import "/static/form.css";
+@import "/static/inline.css";
+@import "/static/misc.css";
 
 :root {
 	--background:  #111111;
+	--background2: #1b1b1b;
 	--color:       #eeeeee;
+	--color2:      #cdcdcd;
 	--accent1:     #41ead4;
 	--accent2:     #8963ba;
 	--accent3:     #f06449;
@@ -20,12 +24,14 @@ body {
 	color: var(--color);
 	font: 16px/1.4 sysem-ui;
 	margin: 2em auto;
-	max-width: 750px;
+	max-width: 900px;
 	overflow-y: overlay;
 }
 
-a {
-	color: var(--accent1);
+header, .center {
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 0 2em;
 }
 
 .error {

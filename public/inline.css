@@ -1,0 +1,29 @@
+h2 {
+	font-size: 1.2em;
+}
+
+a {
+	color: var(--accent1);
+	text-decoration: none;
+}
+
+a:hover, a:focus {
+	text-decoration: underline;
+}
+
+code {
+	font-family: monospace;
+	padding: 1px 2px;
+	border-radius: 2px;
+	background-color: var(--background2);
+}
+
+blockquote {
+	border-left: solid var(--color2) 4px;
+	padding: 0 1em;
+}
+
+p {
+	margin: 0.5em 0;
+}
+

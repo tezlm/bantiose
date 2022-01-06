@@ -1,0 +1,21 @@
+.posts {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.post {
+	margin: 1em;
+	border: solid var(--accent1) 2px;
+	padding: 1em;
+	overflow-wrap: break-word;
+}
+
+.post > h2 > a {
+	color: inherit;
+}
+
+.fineprint {
+	color: var(--color2);
+	margin-bottom: 1em;
+}
+

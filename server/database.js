@@ -24,7 +24,7 @@ async function init(schema, log) {
 		table.date("createdAt");
 		table.integer("author").unsigned();
 		table.string("title");
-		table.string("description");
+		table.string("body");
 	}).createTable("media", table => {
 		// for the file store
 		table.string("filename");
