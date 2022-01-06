@@ -1,22 +1,19 @@
 import busboy from "busboy";
 
-// TODO: this code is messy! redo it
 async function parse(req, files) {
 	const bb = busboy({ headers: req.headers, limits: { files: 1 } });
 	return new Promise((res) => {
 		const post = {};
 		let hasFile = false;
 		bb.on("field", (key, val) => post[key] = val);
-		bb.on("file", async (_name, file, info) => {
+		bb.on("file", async (_name, stream, info) => {
 			hasFile = true;
-			res({
-				post,
-				file: {
-					attachHash:	await files.insert(file),
-					attachName: info.filename,
-					attachType: info.mimeType,
-				},
-			});
+			const file = {
+				attachHash:	await files.insert(stream),
+				attachName: info.filename,
+				attachType: info.mimeType,
+			};
+			res({ post, file });
 		});
 		bb.on("close", () => {
 			if(!hasFile) res({ post });

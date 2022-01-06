@@ -6,16 +6,19 @@ const md = markdown({
 	linkify: true,
 });
 
+// get a post by id
 export async function getPost(db, id) {
 	const [post] = await db("posts").select().where("postId", id);
 	return post ?? null;
 }
 
+// get a user by id
 export async function getUser(db, id) {
 	const [user] = await db("users").select().where("userId", id);
 	return user ?? null;
 }
 
+// render a post
 export function render(post, author, trim = false) {
 	const date = new Date(post.createdAt);
 	const body = (trim && post.body.length > 200) ? post.body.slice(0, 200) + "..." : post.body;
@@ -30,13 +33,36 @@ export function render(post, author, trim = false) {
 	};
 }
 
-// TODO: add support for other content types
-export function attachment(post) {
-	switch(post.attachType?.split("/")[0]) {
-		case "image":
-			return `<img src="/media/${post.attachHash.toString("hex")}/${escape(post.attachName)}" alt="main image" class="attachment" />`;
-		default:
-			return null;
+// render a post's attachment to html
+function attachment(post) {
+	if(!post.attachHash) return null;
+	const location = `/media/${post.attachHash.toString("hex")}/${escape(post.attachName)}`;
+	return {
+		html: toHtml(),
+		preview: getPreview(),
+		url: location,
+	};
+
+	function toHtml() {
+		switch(post.attachType.split("/")[0]) {
+			case "image":
+				return `<img src="${location}" alt="main image" class="attachment" />`;
+			case "audio":
+				return `<audio controls src="${location}" alt="main audio" class="attachment"></audio>`;
+			case "video":
+				return `<video controls src="${location}" alt="main video" class="attachment"></video>`;
+			default:
+				return null;
+		}
+	}
+
+	function getPreview() {
+		switch(post.attachType.split("/")[0]) {
+			case "image":
+				return location;
+			default:
+				return null;
+		}
 	}
 }
 
@@ -57,6 +83,7 @@ const units = [
 	{ name: "internet explorer page load", size: 1000 },
 ];
 
+// format dates to a relative time
 function format(date) {
 	const delta = Date.now() - date;
 	let size = 1;

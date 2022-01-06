@@ -1,6 +1,6 @@
 <main class="center">
 	<h1>{{title}}</h1>
 	<div class="fineprint"><i><time datetime="{{time}}">{{timefmt}}</time> - by {{author}}</i></div>
-	{{#attachment}}{{{this}}}{{/attachment}}
+	{{#attachment}}<a href="{{url}}">{{{html}}}</a>{{/attachment}}
 	<p>{{{body}}}</p>
 </main>

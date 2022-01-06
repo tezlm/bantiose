@@ -8,7 +8,7 @@ they find throughout the day. Name comes from banal and otiose.
 - [x] authentication 
 - [x] user config
 - [x] basic posting
-- [ ] media posts
+- [x] media posts
 - [ ] post config
 - [ ] user profiles
 - [ ] tagging

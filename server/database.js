@@ -25,9 +25,14 @@ async function init(schema, log) {
 		table.integer("author").unsigned();
 		table.string("title");
 		table.string("body");
-		table.string("attachHash");
-		table.string("attachName");
-		table.string("attachType");
+		table.integer("attachment").unsigned();
+	}).createTable("files", table => {
+		// map of the files
+		table.increments("fileId").primary();
+		table.string("hash");
+		table.string("name");
+		table.string("type");
+		table.binary("preview");
 	}).createTable("log", table => {
 		// log of everything that happens
 		table.increments("auditId");

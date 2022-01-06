@@ -1,3 +1,4 @@
+// save files to a hash-based filestore
 import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
@@ -5,9 +6,9 @@ import crypto from "crypto";
 class Filestore {
 	where = path.join(process.cwd(), ".data"); 
 	
-	constructor(log, db, options) {
-		this.log = log;
-		this.db = db;
+	constructor(ctx, options) {
+		this.log = ctx.log;
+		this.db = ctx.db;
 		this.options = options;
 	}
 
@@ -28,7 +29,7 @@ class Filestore {
 				const h = hash.digest();
 				await tmpFd.close();
 				await fs.rename(tmpName, path.join(this.where, "files", h.toString("hex")));
-				this.log.info("saved file with hash " + h.toString("hex"));
+				this.log.debug("saved file with hash " + h.toString("hex"));
 				res(h);
 			});
 		});
@@ -47,6 +48,6 @@ async function exists(where) {
 export default async function(ctx, options) {
 	if(!await exists(".data/files")) await fs.mkdir(".data/files");
 	if(!await exists(".data/tmp")) await fs.mkdir(".data/tmp");
-	return new Filestore(ctx.log, ctx.db, options);
+	return new Filestore(ctx, options);
 }
 
