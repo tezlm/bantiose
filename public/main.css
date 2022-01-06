@@ -1,6 +1,6 @@
 /* the main css stylesheet for everything */
 @import "/static/form.css";
-@import "/static/inline.css";
+@import "/static/content.css";
 @import "/static/misc.css";
 
 :root {
@@ -31,7 +31,8 @@ body {
 header, .center {
 	max-width: 700px;
 	margin: 0 auto;
-	padding: 0 2em;
+	padding: 0 2rem;
+	padding: 0 2rem;
 }
 
 .error {

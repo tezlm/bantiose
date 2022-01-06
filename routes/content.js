@@ -1,26 +1,10 @@
 import { render, getUser, getPost } from "../server/posts.js";
 
-export default (app, { log, db, sessions }) => {
-	app.post("/create", create);
+export default (app, { db, files }) => {
 	app.get("/post/:id", routePost, cantFind);
 	app.get("/raw/:id", routePostRaw, cantFind);
-
-	async function create(req, res) {
-		const userId = sessions.get(req.cookies.session);
-		if(!userId) return res.redirect("/login");
-		const post = req.body;
-
-		const [id] = await db("posts").insert({
-			createdAt: new Date(),
-			title: post.title || "unnamed",
-			body: post.body || "",
-			author: userId,
-		});
-
-		log.info(`created post #${id}, by ${req.cookies.username}`);
-		log.debug(`redirecting to info /post/${id}...`);
-		res.redirect(`/post/${id}`);
-	}
+	app.get("/media/:hash", routeMedia, cantFind);
+	app.get("/media/:hash/*", routeMedia, cantFind);
 
 	async function routePost(req, res, next) {
 		const post = await getPost(db, req.params.id);
@@ -32,6 +16,12 @@ export default (app, { log, db, sessions }) => {
 		const post = await getPost(db, req.params.id);
 		if(!post) return next();
 		res.contentType("text/markdown").send(post.body);
+	}
+
+	async function routeMedia(req, res, next) {
+		const file = await files.get(req.params.hash).catch(() => null);
+		if(!file) return next();
+		file.pipe(res);
 	}
 
 	async function cantFind(_, res) {

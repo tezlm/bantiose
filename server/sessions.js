@@ -26,5 +26,5 @@ export class Sessions extends Map {
 }
 
 // the default session manager
-export default () => new Sessions(1000 * 30);
+export default () => new Sessions();
 

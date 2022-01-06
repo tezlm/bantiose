@@ -1,10 +1,12 @@
 <header>
 	<h1>new post</h1>
 </header>
-<form method="POST" action="/create" class="center">
+<form method="POST" action="/create" class="center" enctype="multipart/form-data">
 	<label for="title">title</label><br />
 	<input required name="title" type="text" placeholder="sample text here..." /><br />
 	<label for="body">content</label><br />
 	<textarea name="body" placeholder="wow look cool even more sample text" /></textarea><br />
+	<label for="attachment">attachment</label><br />
+	<input type="file" name="attachment" /><br />
 	<input type="submit" value="create" />
 </form>

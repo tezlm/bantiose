@@ -23,9 +23,10 @@ app.use((req, _, next) => {
 
 // load context
 const ctx = {};
-ctx.db = await load("./server/database.js", log);
-ctx.sessions = await load("./server/sessions.js", log);
 ctx.log = log;
+ctx.db = await load("./server/database.js", log);
+ctx.sessions = await load("./server/sessions.js");
+ctx.files = await load("./server/files.js", ctx, { maxSize: 1000 * 1000 * 20 });
 
 // load routes
 for(let i of await fs.readdir("routes")) {

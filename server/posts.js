@@ -26,8 +26,18 @@ export function render(post, author, trim = false) {
 		time: date,
 		timefmt: format(date), 
 		author: author?.username ?? "unknown...",
+		attachment: attachment(post),
 	};
+}
 
+// TODO: add support for other content types
+export function attachment(post) {
+	switch(post.attachType?.split("/")[0]) {
+		case "image":
+			return `<img src="/media/${post.attachHash.toString("hex")}/${escape(post.attachName)}" alt="main image" class="attachment" />`;
+		default:
+			return null;
+	}
 }
 
 const units = [

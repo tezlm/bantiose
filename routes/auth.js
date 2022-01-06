@@ -29,6 +29,7 @@ export default (app, { log, db, sessions }) => {
 		const hash = genHash(password + salt);
 		const userId = await db("users").insert({ username, createdAt: new Date() });
 		await db("passwords").insert({ userId, password: hash, salt });
+		await db("log").insert({ createdAt: new Date(), type: "user.new", creator: userId });
 
 		// celebrate with cookies!
 		log.info(`new user! welcome, ${username}!`);

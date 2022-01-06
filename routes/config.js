@@ -27,6 +27,7 @@ export default (app, { log, db, sessions }) => {
 		const sess = sessions.from(req);
 		if(!sess) return res.redirect("/login");
 		await db("users").update({ about: req.body.about }).where("userId", sess);
+		await db("log").insert({ createdAt: new Date(), type: "user.about", creator: sess, data: req.body.about });
 		log.debug(`update ${req.cookies.username}'s about`);
 		res.redirect("/config");
 	}
@@ -79,6 +80,7 @@ export default (app, { log, db, sessions }) => {
 		// update user
 		await db("users").delete().where("userId", sess);
 		await db("passwords").delete().where("userId", sess);
+		await db("log").insert({ createdAt: new Date(), type: "user.death", creator: sess });
 
 		// cry in the corner (but with cookies...)
 		log.info(`farewell, ${req.cookies.username}`);

@@ -25,11 +25,9 @@ async function init(schema, log) {
 		table.integer("author").unsigned();
 		table.string("title");
 		table.string("body");
-	}).createTable("media", table => {
-		// for the file store
-		table.string("filename");
-		table.string("hash");
-		table.integer("filesize").unsigned();
+		table.string("attachHash");
+		table.string("attachName");
+		table.string("attachType");
 	}).createTable("log", table => {
 		// log of everything that happens
 		table.increments("auditId");
@@ -42,7 +40,6 @@ async function init(schema, log) {
 
 export default async (log) => {
 	if(!fs.existsSync(".data")) fs.mkdirSync(".data");
-	if(!fs.existsSync(".data/files")) fs.mkdirSync(".data/files");
 
 	const db = knex({
 		useNullAsDefault: true,
