@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 
+// TODO: generate thumbnails
 class Filestore {
 	where = path.join(process.cwd(), ".data"); 
 	
@@ -12,7 +13,7 @@ class Filestore {
 		this.options = options;
 	}
 
-	async insert(stream) {
+	async insert(info, stream) {
 		let hash = crypto.createHash("sha256");
 		let size = 0;
 		const tmpName = path.join(this.where, "tmp", crypto.randomUUID());
@@ -29,8 +30,9 @@ class Filestore {
 				const h = hash.digest();
 				await tmpFd.close();
 				await fs.rename(tmpName, path.join(this.where, "files", h.toString("hex")));
-				this.log.debug("saved file with hash " + h.toString("hex"));
-				res(h);
+				const [id] = await this.db("files").insert({ hash: h, name: info.filename, type: info.mimeType });
+				this.log.debug(`saved file with hash ${h.toString("hex")}`);
+				res(id);
 			});
 		});
 	}

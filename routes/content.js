@@ -9,7 +9,7 @@ export default (app, { db, files }) => {
 	async function routePost(req, res, next) {
 		const post = await getPost(db, req.params.id);
 		if(!post) return next();
-		res.render("post.html", render(post, await getUser(db, post.author)));
+		res.render("post.html", await render(db, post, await getUser(db, post.author)));
 	}
 
 	async function routePostRaw(req, res, next) {

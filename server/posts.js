@@ -18,8 +18,16 @@ export async function getUser(db, id) {
 	return user ?? null;
 }
 
+// get a file by id
+export async function getFile(db, id) {
+	const [file] = await db("files").select().where("fileId", id);
+	return file ?? null;
+}
+
 // render a post
-export function render(post, author, trim = false) {
+// TODO: look into joining tables (posts + files)
+// TODO: i really don't like having to pass in `db` to everything...
+export async function render(db, post, author, trim = false) {
 	const date = new Date(post.createdAt);
 	const body = (trim && post.body.length > 200) ? post.body.slice(0, 200) + "..." : post.body;
 	return {
@@ -29,14 +37,13 @@ export function render(post, author, trim = false) {
 		time: date,
 		timefmt: format(date), 
 		author: author?.username ?? "unknown...",
-		attachment: attachment(post),
+		attachment: post.attachment ? attachment(await getFile(db, post.attachment)) : null,
 	};
 }
 
 // render a post's attachment to html
-function attachment(post) {
-	if(!post.attachHash) return null;
-	const location = `/media/${post.attachHash.toString("hex")}/${escape(post.attachName)}`;
+function attachment(file) {
+	const location = `/media/${file.hash.toString("hex")}/${escape(file.name)}`;
 	return {
 		html: toHtml(),
 		preview: getPreview(),
@@ -44,7 +51,7 @@ function attachment(post) {
 	};
 
 	function toHtml() {
-		switch(post.attachType.split("/")[0]) {
+		switch(file.type.split("/")[0]) {
 			case "image":
 				return `<img src="${location}" alt="main image" class="attachment" />`;
 			case "audio":
@@ -57,7 +64,7 @@ function attachment(post) {
 	}
 
 	function getPreview() {
-		switch(post.attachType.split("/")[0]) {
+		switch(file.type.split("/")[0]) {
 			case "image":
 				return location;
 			default:

@@ -8,12 +8,7 @@ async function parse(req, files) {
 		bb.on("field", (key, val) => post[key] = val);
 		bb.on("file", async (_name, stream, info) => {
 			hasFile = true;
-			const file = {
-				attachHash:	await files.insert(stream),
-				attachName: info.filename,
-				attachType: info.mimeType,
-			};
-			res({ post, file });
+			res({ post, file: await files.insert(info, stream) });
 		});
 		bb.on("close", () => {
 			if(!hasFile) res({ post });
@@ -35,7 +30,7 @@ export default (app, { log, db, files, sessions }) => {
 			title: post.title || "unnamed",
 			body: post.body || "",
 			author: userId,
-			...(file ?? {})
+			attachment: file ?? null,
 		});
 		await db("log").insert({ createdAt: new Date(), type: "post.new", creator: userId, data: id });
 

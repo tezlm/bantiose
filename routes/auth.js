@@ -10,6 +10,7 @@ function genHash(input) {
 	return hashed;
 }
 
+// TODO: username validation of some kind
 export default (app, { log, db, sessions }) => {
 	app.post("/login", login);
 	app.post("/signup", signup);

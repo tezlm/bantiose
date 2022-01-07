@@ -13,7 +13,7 @@ export default (app, { db, sessions }) => {
 
 	async function getPost(post) {
 		const [author] = await db("users").select().where("userId", post.author);
-		return render(post, author, true);
+		return await render(db, post, author, true);
 	}
 };
 
