@@ -9,9 +9,9 @@ they find throughout the day. Name comes from banal and otiose.
 - [x] user config
 - [x] basic posting
 - [x] media posts
-- [ ] post config
-- [ ] user profiles
 - [ ] tagging
 - [ ] voting
+- [ ] post config
+- [ ] user profiles
 - [ ] searching
 
