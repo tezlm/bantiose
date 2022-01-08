@@ -19,7 +19,7 @@ export default (app, { log, db, sessions }) => {
 		const { username, password } = req.body;
 
 		// h usernames
-		if(/^[a-z0-9_-]{4,64}$/i.test(username)) return render(res, "signup", "passwords dont match");
+		if(!/^[a-z0-9_-]{3,64}$/i.test(username)) return render(res, "signup", "bad username");
 
 		// make sure the passwords match!
 		if(password !== req.body.firmpass) return render(res, "signup", "passwords dont match");
