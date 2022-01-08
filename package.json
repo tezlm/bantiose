@@ -6,9 +6,12 @@
 	"scripts": {
 		"start": "node index.js"
 	},
+	"engines": {
+		"node": ">=16.0.0"
+	},
 	"author": "tezlm",
 	"type": "module",
-	"license": "ISC",
+	"license": "GPL",
 	"dependencies": {
 		"busboy": "^1.3.0",
 		"cookie-parser": "^1.4.6",
