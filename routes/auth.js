@@ -18,6 +18,9 @@ export default (app, { log, db, sessions }) => {
 	async function signup(req, res) {
 		const { username, password } = req.body;
 
+		// h usernames
+		if(/^[a-z0-9_-]{4,64}$/i.test(username)) return render(res, "signup", "passwords dont match");
+
 		// make sure the passwords match!
 		if(password !== req.body.firmpass) return render(res, "signup", "passwords dont match");
 

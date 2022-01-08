@@ -1,9 +1,19 @@
 import markdown from "markdown-it";
+import hljs from "highlight.js";
 const md = markdown({
 	xHtmlOut: true,
 	langPrefix: "lang-",
 	typographer: true,
 	linkify: true,
+	highlight(str, lang) {
+		if (lang && hljs.getLanguage(lang)) {
+			try {
+				return hljs.highlight(str, { language: lang }).value;
+			} catch {}
+		}
+
+		return "";
+	},
 });
 
 // get a post by id

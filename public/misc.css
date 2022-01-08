@@ -6,13 +6,19 @@
 
 .post {
 	margin: 1em;
+	min-height: 240px;
 	border: solid var(--accent1) 2px;
 	overflow-wrap: break-word;
+	overflow: hidden;
 	background-size: cover;
 }
 
 .post h2 > a {
 	color: inherit;
+}
+
+.post pre {
+	overflow: hidden;
 }
 
 .fineprint {

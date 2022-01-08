@@ -1,6 +1,7 @@
 /* the main css stylesheet for everything */
 @import "/static/form.css";
 @import "/static/content.css";
+@import "/static/highlight.css";
 @import "/static/misc.css";
 
 :root {
@@ -22,7 +23,7 @@
 body {
 	background: var(--background);
 	color: var(--color);
-	font: 16px/1.4 sysem-ui;
+	font: 16px/1.4 system-ui;
 	margin: 2em auto;
 	max-width: 900px;
 	overflow-y: overlay;

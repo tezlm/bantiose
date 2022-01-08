@@ -11,11 +11,17 @@ a:hover, a:focus {
 	text-decoration: underline;
 }
 
-code {
+code, pre {
 	font-family: monospace;
+	overflow-x: auto;
 	padding: 1px 2px;
 	border-radius: 2px;
 	background-color: var(--background2);
+}
+
+pre {
+	padding: 1em 1em;
+	border-radius: 4px;
 }
 
 blockquote {
